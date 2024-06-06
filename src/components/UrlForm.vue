@@ -12,11 +12,20 @@ export default {
   methods: {
     async shortenUrl() {
       try {
-        const response = await axios.post('/api/generate_hash', { url: this.url });
+        const response = await axios.post('http://127.0.0.1:8000/api/generate_hash', { url: this.url });
+
+        if (response.data.message === "URL is not safe") {
+          var alertMessage = "URL is not safe.\n";
+          alertMessage += "Threat Type: " + response.data.threat_type;
+
+          alert(alertMessage);
+        }
+
         if (response.data.message === 'URL already exists') {
           alert(response.data.message);
         } else {
           this.shortUrl = response.data.short_url_hash;
+          console.log( this.shortUrl);
         }
       } catch (error) {
         console.error(error);
@@ -36,12 +45,9 @@ export default {
       <button type="submit">Shorten</button>
     </form>
     <div v-if="shortUrl" class="label">
-      Short URL: <a :href="shortUrl">{{ shortUrl }}</a>
+      Short URL: <a :href="url" target="_blank">{{ shortUrl }}</a>
     </div>
 
-<!--    <div class="label">-->
-<!--      Short URL: <a :href="shortUrl">{{ shortUrl }}</a>-->
-<!--    </div>-->
 
   </div>
 </template>

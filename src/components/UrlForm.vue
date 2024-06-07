@@ -44,6 +44,9 @@ export default {
         this.alertUnsafeUrl(data)
       } else if (data.message === 'URL already exists') {
         this.errorMessage = 'This URL already exists in the database.'
+        this.shortUrl = data.short_url_hash
+        // this.errorMessage = ''
+        console.log('Existing url:', data.short_url_hash)
       } else {
         this.shortUrl = data.short_url_hash
         this.errorMessage = ''
